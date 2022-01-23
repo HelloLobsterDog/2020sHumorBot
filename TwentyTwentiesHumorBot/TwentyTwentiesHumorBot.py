@@ -9,6 +9,10 @@ class IdentifiedObject(object):
 	def __init__(self, name, rect):
 		self.name = name
 		self.rect = rect
+		
+class BotIntegratedEasyTweeter(EasyTweeter):		
+	def getStateDirectory(self):
+		return os.path.join(self.configurationDirectory, 'EasyTweeterState')
 
 class TwentyTwentiesHumorBot(object):
 	def __init__(self, homeDir):
@@ -19,6 +23,7 @@ class TwentyTwentiesHumorBot(object):
 		self.identifiedImageDirName = 'identified'
 		self.usedDirName = 'used'
 		self.minProbability = 50
+		self.twitterInteractionCheckInterval = 5
 		
 	def run(self):
 		try:
@@ -94,7 +99,17 @@ class TwentyTwentiesHumorBot(object):
 		pass # TODO
 		
 	def tweetImage(self, image):
-		pass # TODO
+		self.logger.debug("tweeting image...")
+		bot = BotIntegratedEasyTweeter(self.homeDir, logger = self.logger.getChild("easytweeter"))
+		try:
+			bot.tweetImage(image)
+			bot.checkForUpdates(self.twitterInteractionCheckInterval, directMessages = False)
+			
+		except Exception as e:
+			bot.logger.exception('Exception caused twitter bot to fail.')
+			raise e
+				
+		bot.logger.info("Bot completed successfully.\n")
 		
 	def markImageAsUsed(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.usedDirName, os.path.basename(path))
