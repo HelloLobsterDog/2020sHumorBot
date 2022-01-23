@@ -17,6 +17,7 @@ class TwentyTwentiesHumorBot(object):
 		
 		self.inputImageDirName = 'input'
 		self.identifiedImageDirName = 'identified'
+		self.usedDirName = 'used'
 		self.minProbability = 50
 		
 	def run(self):
@@ -96,4 +97,6 @@ class TwentyTwentiesHumorBot(object):
 		pass # TODO
 		
 	def markImageAsUsed(self, path):
-		pass # TODO
+		pathToMoveTo = os.path.join(self.homeDir, self.usedDirName, os.path.basename(path))
+		os.rename(path, pathToMoveTo)
+		self.logger.info("image %s moved to used folder: %s", path, pathToMoveTo)
