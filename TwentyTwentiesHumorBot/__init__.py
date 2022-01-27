@@ -1,12 +1,13 @@
 import argparse
 import os
 import os.path
+import sys
 import logging
 import logging.handlers
 
 from .TwentyTwentiesHumorBot import TwentyTwentiesHumorBot
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 

@@ -4,13 +4,14 @@ import os.path
 import random
 
 from imageai.Detection import ObjectDetection
+from EasyTweeter import EasyTweeter
 
 class IdentifiedObject(object):
 	def __init__(self, name, rect):
 		self.name = name
-		self.rect = rect
+		self.rect = rect # tuple of (x1, y1, x2, y2)
 		
-class BotIntegratedEasyTweeter(EasyTweeter):		
+class BotIntegratedEasyTweeter(EasyTweeter):
 	def getStateDirectory(self):
 		return os.path.join(self.configurationDirectory, 'EasyTweeterState')
 
@@ -31,8 +32,8 @@ class TwentyTwentiesHumorBot(object):
 			
 			image = self.pickImage()
 			objectInImage = self.objectIdentification(image)
-			stupifiedName = self.stupifyName(objectInImage)
 			bulgedImage = self.bulgeImage(image, objectInImage)
+			stupifiedName = self.stupifyName(objectInImage)
 			bulgedLabeledImage = self.writeText(bulgedImage, stupifiedName)
 			self.saveImageToFile(bulgedLabeledImage)
 			self.tweetImage(bulgedLabeledImage)
@@ -45,6 +46,9 @@ class TwentyTwentiesHumorBot(object):
 			return False
 		
 		
+		
+	def validateHomeDir(self):
+		pass # TODO
 		
 	def pickImage(self):
 		path = os.path.join(self.homeDir, self.inputImageDirName)
@@ -59,15 +63,16 @@ class TwentyTwentiesHumorBot(object):
 		detector = ObjectDetection()
 		detector.setModelTypeAsRetinaNet()
 		
-		modelPath = os.path.join(self.homeDir, "model")
-		modelPathContents = os.listdir(modelPath)
+		modelDir = os.path.join(self.homeDir, "model")
+		modelPathContents = os.listdir(modelDir)
 		if len(modelPathContents) > 1:
 			raise RuntimeError("More than one file is present in the model directory. Don't know which model to use.")
 		elif len(modelPathContents) < 1:
 			raise RuntimeError("No model is present in model directory.")
-		detector.setModelPath(modelPathContents[0])
+		modelPath = os.path.join(modelDir, modelPathContents[0])
+		detector.setModelPath(modelPath)
 		
-		self.logger.info("Loading model from %s", modelPathContents[0])
+		self.logger.info("Loading model from %s", modelPath)
 		detector.loadModel()
 		self.logger.debug("Successfully loaded model.")
 		
@@ -77,14 +82,14 @@ class TwentyTwentiesHumorBot(object):
 		
 		things = []
 		for thing in detections:
-			self.logger.info(eachObject["name"] + " : " + eachObject["percentage_probability"] + " : " + str(eachObject["box_points"]))
-			things.append(IdentifiedObject(eachObject["name"], eachObject["box_points"])
+			self.logger.info("object detected: " + thing["name"] + " : " + str(thing["percentage_probability"]) + " : " + str(thing["box_points"]))
+			things.append(IdentifiedObject(thing["name"], thing["box_points"]))
 		things.sort(key=lambda x: self._areaOfBox(x), reverse=True)
 		
 		return things[0]
 		
-	def _areaOfBox(self, boxPoints):
-		return (boxPoints[2] - boxPoints[0]) * (boxPoints[3] - boxPoints[1])
+	def _areaOfBox(self, obj):
+		return (obj.rect[2] - obj.rect[0]) * (obj.rect[3] - obj.rect[1])
 		
 	def stupifyName(self, objectInImage):
 		pass # TODO
