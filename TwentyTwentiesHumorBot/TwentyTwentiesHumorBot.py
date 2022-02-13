@@ -4,16 +4,12 @@ import os.path
 import random
 import math
 
-from imageai.Detection import ObjectDetection
 from EasyTweeter import EasyTweeter
 from PIL import Image, ImageFont, ImageDraw
 import numpy
 import cv2
 
-class IdentifiedObject(object):
-	def __init__(self, name, rect):
-		self.name = name
-		self.rect = rect # tuple of (x1, y1, x2, y2)
+from ObjectDetector import ObjectDetector
 		
 class BotIntegratedEasyTweeter(EasyTweeter):
 	def getStateDirectory(self):
@@ -29,8 +25,6 @@ class TwentyTwentiesHumorBot(object):
 		self.bulgedDirName = 'bulged'
 		self.labeledDirName = 'output'
 		self.usedDirName = 'used'
-		# object detection
-		self.minProbability = 10
 		# image bulging
 		self.bulgeAmountMin = 0.8
 		self.bulgeAmountMax = 0.95
@@ -50,7 +44,7 @@ class TwentyTwentiesHumorBot(object):
 			self.validateHomeDir()
 			
 			image = self.pickImage()
-			objectInImage = self.objectIdentification(image)
+			objectInImage = ObjectDetector(self.homeDir).objectIdentification(image, os.path.join(self.homeDir, self.identifiedImageDirName))
 			bulgedImage = self.bulgeImage(image, objectInImage)
 			stupifiedName = self.stupifyName(objectInImage)
 			bulgedLabeledImage = self.writeText(bulgedImage, stupifiedName)
@@ -76,38 +70,6 @@ class TwentyTwentiesHumorBot(object):
 		picked = os.path.join(self.homeDir, self.inputImageDirName, random.choice(filesInDir))
 		self.logger.info("Picked image: %s", picked)
 		return picked
-		
-	def objectIdentification(self, pathToImage):
-		detector = ObjectDetection()
-		detector.setModelTypeAsRetinaNet()
-		
-		modelDir = os.path.join(self.homeDir, "model")
-		modelPathContents = os.listdir(modelDir)
-		if len(modelPathContents) > 1:
-			raise RuntimeError("More than one file is present in the model directory. Don't know which model to use.")
-		elif len(modelPathContents) < 1:
-			raise RuntimeError("No model is present in model directory.")
-		modelPath = os.path.join(modelDir, modelPathContents[0])
-		detector.setModelPath(modelPath)
-		
-		self.logger.info("Loading model from %s", modelPath)
-		detector.loadModel()
-		self.logger.debug("Successfully loaded model.")
-		
-		self.logger.info("Detecting objects in image...")
-		detections = detector.detectObjectsFromImage(input_image=pathToImage, output_image_path=os.path.join(self.homeDir, self.identifiedImageDirName, os.path.basename(pathToImage)), minimum_percentage_probability = self.minProbability)
-		self.logger.info("Successfully detected %s objects.", str(len(detections)))
-		
-		things = []
-		for thing in detections:
-			self.logger.info("object detected: " + thing["name"] + " : " + str(thing["percentage_probability"]) + " : " + str(thing["box_points"]))
-			things.append(IdentifiedObject(thing["name"], thing["box_points"]))
-		things.sort(key=lambda x: self._areaOfBox(x), reverse=True)
-		
-		return things[0]
-		
-	def _areaOfBox(self, obj):
-		return (obj.rect[2] - obj.rect[0]) * (obj.rect[3] - obj.rect[1])
 		
 	def bulgeImage(self, pathToImage, objectInImage):
 		# load image
