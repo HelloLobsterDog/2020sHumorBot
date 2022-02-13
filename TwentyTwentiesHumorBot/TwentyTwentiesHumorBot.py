@@ -4,16 +4,12 @@ import os.path
 import random
 import math
 
-from EasyTweeter import EasyTweeter
 from PIL import Image, ImageFont, ImageDraw
 import numpy
 import cv2
 
 from ObjectDetector import ObjectDetector
-		
-class BotIntegratedEasyTweeter(EasyTweeter):
-	def getStateDirectory(self):
-		return os.path.join(self.configurationDirectory, 'EasyTweeterState')
+from ImageTweeter import ImageTweeter
 
 class TwentyTwentiesHumorBot(object):
 	def __init__(self, homeDir):
@@ -36,8 +32,6 @@ class TwentyTwentiesHumorBot(object):
 		self.textPadding = 20
 		self.startingFontSize = 12
 		self.strokeDivisor = 20
-		# twitter
-		self.twitterInteractionCheckInterval = 5
 		
 	def run(self):
 		try:
@@ -48,7 +42,7 @@ class TwentyTwentiesHumorBot(object):
 			bulgedImage = self.bulgeImage(image, objectInImage)
 			stupifiedName = self.stupifyName(objectInImage)
 			bulgedLabeledImage = self.writeText(bulgedImage, stupifiedName)
-			self.tweetImage(bulgedLabeledImage)
+			ImageTweeter(self.homeDir).tweetImage(bulgedLabeledImage)
 			self.markImageAsUsed(image)
 			
 			return True
@@ -177,19 +171,6 @@ class TwentyTwentiesHumorBot(object):
 		outputImage.save(outputPath)
 		outputImage.close()
 		inputImage.close()
-		
-	def tweetImage(self, imagePath):
-		self.logger.debug("tweeting image...")
-		bot = BotIntegratedEasyTweeter(self.homeDir, logger = self.logger.getChild("easytweeter"))
-		try:
-			bot.tweetImage(imagePath)
-			bot.checkForUpdates(self.twitterInteractionCheckInterval, directMessages = False)
-			
-		except Exception as e:
-			bot.logger.exception('Exception caused twitter bot to fail.')
-			raise e
-				
-		bot.logger.info("Bot completed successfully.\n")
 		
 	def markImageAsUsed(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.usedDirName, os.path.basename(path))
