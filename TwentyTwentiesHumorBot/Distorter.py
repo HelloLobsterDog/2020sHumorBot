@@ -1,3 +1,4 @@
+import logging
 import os.path
 import random
 import math
@@ -15,12 +16,12 @@ class Distorter(object):
 		self.bulgeRadiusMultiplier = 1.1
 		self.bulgeCenteringFactor = 0.5 # .5 results in all coords being moved toward the center of the object by half of their distance
 	
-	def distort(self, pathToImage, objectInImage):
-		return self.bulgeImage(pathToImage, objectInImage)
+	def distort(self, pathToImage, outputDir, objectInImage):
+		return self.bulgeImage(pathToImage, outputDir, objectInImage)
 		
 		
 		
-	def bulgeImage(self, pathToImage, objectInImage):
+	def bulgeImage(self, pathToImage, outputDir, objectInImage):
 		# load image
 		inputImage = cv2.imread(pathToImage)
 		h, w, _ = inputImage.shape
@@ -67,7 +68,7 @@ class Distorter(object):
 		self.logger.debug("successfully remapped.")
 		
 		# save it back to a file
-		outputPath = os.path.join(self.homeDir, self.bulgedDirName, os.path.split(pathToImage)[1])
+		outputPath = os.path.join(outputDir, os.path.split(pathToImage)[1])
 		self.logger.info("Saving bulged image to path: " + outputPath)
 		cv2.imwrite(outputPath, outputImage)
 		

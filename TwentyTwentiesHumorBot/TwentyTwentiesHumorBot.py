@@ -1,4 +1,7 @@
 import logging
+import os
+import os.path
+import random
 
 from .ObjectDetector import ObjectDetector
 from .ImageTweeter import ImageTweeter
@@ -23,9 +26,9 @@ class TwentyTwentiesHumorBot(object):
 			
 			image = self.pickImage()
 			objectInImage = ObjectDetector(self.homeDir).objectIdentification(image, os.path.join(self.homeDir, self.identifiedImageDirName))
-			distortedImage = Distorter(self.homeDir).distort(image, objectInImage)
-			stupifiedName = NameStupifier().stupifyName(objectInImage.name)
-			distortedLabeledImage = ImageCaptioner(self.homeDir).writeText(distortedImage, stupifiedName)
+			distortedImage = Distorter(self.homeDir).distort(image, os.path.join(self.homeDir, self.bulgedDirName), objectInImage)
+			stupifiedName = NameStupifier().stupify(objectInImage.name)
+			distortedLabeledImage = ImageCaptioner(self.homeDir).writeText(distortedImage, os.path.join(self.homeDir, self.labeledDirName), stupifiedName)
 			ImageTweeter(self.homeDir).tweetImage(distortedLabeledImage)
 			self.markImageAsUsed(image)
 			

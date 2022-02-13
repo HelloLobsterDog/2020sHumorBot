@@ -15,7 +15,7 @@ class ImageCaptioner(object):
 		self.startingFontSize = 12
 		self.strokeDivisor = 20
 		
-	def writeText(self, imagePath, text):
+	def writeText(self, imagePath, outputFolder, text):
 		self.logger.info('Writing text "' + text + '" onto image from path: ' + imagePath)
 		inputImage = Image.open(imagePath)
 		outputImage = inputImage.copy()
@@ -25,7 +25,7 @@ class ImageCaptioner(object):
 		self.logger.debug("loading font at path: " + fontPath)
 		
 		# load the font
-		fontSize = self._determineFontSize(fontPath, text)
+		fontSize = self._determineFontSize(fontPath, text, outputImage)
 		font = ImageFont.truetype(font=fontPath, size=fontSize)
 		sizeX, sizeY = font.getsize(text)
 		
@@ -41,7 +41,7 @@ class ImageCaptioner(object):
 		self.logger.debug("successfully written text to image")
 		
 		# done
-		outputPath = os.path.join(self.homeDir, self.labeledDirName, os.path.split(imagePath)[1])
+		outputPath = os.path.join(outputFolder, os.path.split(imagePath)[1])
 		self.logger.info("Saving output image to path: " + outputPath)
 		outputImage.save(outputPath)
 		outputImage.close()
@@ -57,7 +57,7 @@ class ImageCaptioner(object):
 		fontPath = os.path.join(fontDir, fontPathContents[0])
 		return fontPath
 	
-	def _determineFontSize(self, fontPath, text):
+	def _determineFontSize(self, fontPath, text, outputImage):
 		# step up the size until it's too big, and back off one, because PIL doesn't have a "write text to fill area" function.
 		# This is very slow and inefficient, but whatever, object identification is orders of magnitude slower than this will ever be.
 		maxX = outputImage.width - self.textPadding * 2
