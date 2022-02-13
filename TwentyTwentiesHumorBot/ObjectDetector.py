@@ -25,6 +25,9 @@ class ObjectDetector(object):
 		detections = detector.detectObjectsFromImage(input_image=pathToImage, output_image_path=os.path.join(outputFolder, os.path.basename(pathToImage)), minimum_percentage_probability = self.minProbability)
 		self.logger.info("Successfully detected %s objects.", str(len(detections)))
 		
+		if len(detections) == 0:
+			raise RuntimeError("Detected no objects!")
+		
 		things = []
 		for thing in detections:
 			self.logger.info("object detected: " + thing["name"] + " : " + str(thing["percentage_probability"]) + " : " + str(thing["box_points"]))
