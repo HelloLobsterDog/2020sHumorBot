@@ -1,3 +1,3 @@
 @echo off
-coverage run run_tests.py
-coverage html
+coverage run --source=TwentyTwentiesHumorBot run_tests.py
+coverage html -i
