@@ -30,7 +30,8 @@ class NameStupifier(object):
 				('j', 'g'),
 				('s', 'sh'), ('sh', 's'),
 				('n', 'ñ'),
-				('ee', 'e')
+				('ee', 'e'),
+				('oo', 'o'), ('o', 'oo')
 		]]
 		
 	def stupify(self, name):
@@ -59,6 +60,8 @@ class NameStupifier(object):
 			return name
 			
 	def _flipLetters(self, name):
+		if len(name) < 2: # can't flip two letters if there aren't two letters
+			return name
 		start = random.randrange(len(name)-1)
 		self.logger.info("flipping letters in name " + name + " at index " + str(start))
 		before = name[:start]
