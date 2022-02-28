@@ -2,11 +2,11 @@ import unittest
 import logging
 
 mainLogger = logging.getLogger('2020sHumorBot')
-mainLogger.setLevel(logging.DEBUG)
+mainLogger.setLevel(logging.ERROR) # change to debug and the tests will log everything to the console
 sh = logging.StreamHandler()
 sh.setLevel(logging.DEBUG)
 sh.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
-#mainLogger.addHandler(sh) # uncomment me to make the tests log to the console
+mainLogger.addHandler(sh)
 		
 
 loader = unittest.TestLoader()
