@@ -15,6 +15,8 @@ class ImageCaptioner(object):
 		self.startingFontSize = 12
 		self.strokeDivisor = 20
 		
+		self.fontFilename = None # hang onto this in between runs to save ourselves time if we're doing curation
+		
 	def writeText(self, imagePath, outputFolder, text):
 		self.logger.info('Writing text "' + text + '" onto image from path: ' + imagePath)
 		inputImage = Image.open(imagePath)
@@ -48,14 +50,18 @@ class ImageCaptioner(object):
 		inputImage.close()
 	
 	def _getFontFilename(self):
-		fontDir = os.path.join(self.homeDir, "font")
-		fontPathContents = os.listdir(fontDir)
-		if len(fontPathContents) > 1:
-			raise RuntimeError("More than one file is present in the font directory. Don't know which font to use.")
-		elif len(fontPathContents) < 1:
-			raise RuntimeError("No font is present in font directory.")
-		fontPath = os.path.join(fontDir, fontPathContents[0])
-		return fontPath
+		if self.fontFilename == None:
+			fontDir = os.path.join(self.homeDir, "font")
+			fontPathContents = os.listdir(fontDir)
+			if len(fontPathContents) > 1:
+				raise RuntimeError("More than one file is present in the font directory. Don't know which font to use.")
+			elif len(fontPathContents) < 1:
+				raise RuntimeError("No font is present in font directory.")
+			fontPath = os.path.join(fontDir, fontPathContents[0])
+			self.fontFilename = fontPath
+			return fontPath
+		else:
+			return self.fontFilename
 	
 	def _determineFontSize(self, fontPath, text, outputImage):
 		# step up the size until it's too big, and back off one, because PIL doesn't have a "write text to fill area" function.

@@ -10,19 +10,22 @@ class IdentifiedObject(object):
 		self.rect = rect # tuple of (x1, y1, x2, y2)
 
 class ObjectDetector(object):
-	def __init__(self, homeDir, minProbability = 10):
+	def __init__(self, homeDir, minProbability = 30):
 		self.logger = logging.getLogger('2020sHumorBot').getChild('ObjectDetector')
 		
 		self.homeDir = homeDir
 		self.minProbability = minProbability
+		
+		self.detector = None # Hang onto this in between runs to save ourselves time if we're doing curation. Model loading is very expensive.
 	
 	
 	def objectIdentification(self, pathToImage, outputFolder):
-		detector = ObjectDetection()
-		self._loadModel(detector)
+		if self.detector == None:
+			self.detector = ObjectDetection()
+			self._loadModel(self.detector)
 		
-		self.logger.info("Detecting objects in image...")
-		detections = detector.detectObjectsFromImage(input_image=pathToImage, output_image_path=os.path.join(outputFolder, os.path.basename(pathToImage)), minimum_percentage_probability = self.minProbability)
+		self.logger.info("Detecting objects in image: " + pathToImage)
+		detections = self.detector.detectObjectsFromImage(input_image=pathToImage, output_image_path=os.path.join(outputFolder, os.path.basename(pathToImage)), minimum_percentage_probability = self.minProbability)
 		self.logger.info("Successfully detected %s objects.", str(len(detections)))
 		
 		if len(detections) == 0:

@@ -13,7 +13,7 @@ from .Distorter import Distorter
 from .ImageCaptioner import ImageCaptioner
 from .NameStupifier import NameStupifier
 
-__version__ = '0.5.0'
+__version__ = '0.6.0'
 
 
 
@@ -23,6 +23,10 @@ def parseArgs():
 	verbosityGroup = parser.add_mutually_exclusive_group()
 	verbosityGroup.add_argument('-v', '--verbose', action="store_true", help = "All logs will be printed to stdout.")
 	verbosityGroup.add_argument('-q', '--quiet', action="store_true", help = "All output to stdout and stderr will be disabled.")
+	
+	curationGroup = parser.add_mutually_exclusive_group()
+	curationGroup.add_argument('-c', '--curation', action="store_true", help = "Runs JUST curation mode, which runs everything in homedir/curation/input through the full process but without tweeting anything, so you can manually evaluate whether the images should be used for real.")
+	curationGroup.add_argument('-ic', '--include-curation', action="store_true", help = "Will run a full curation run after the regular execution of the bot.")
 	
 	parser.add_argument('--home-directory', '-d', default='~/.2020sHumorBot',
 						help = "Specifies the bot's home directory, in which it will place the logs and read the model, configs and input images from.")
@@ -74,7 +78,7 @@ def makeLoggers(homeDir, logLevel, verbose):
 		mainLogger.addHandler(sh)
 
 
-def main():
+def main(overrideCuration = False):
 	args = parseArgs()
 	
 	if args.verbose:
@@ -89,9 +93,20 @@ def main():
 	
 	bot = TwentyTwentiesHumorBot(args.home_directory)
 	
-	success = bot.run()
+	if args.curation or overrideCuration:
+		# just curation run
+		success = bot.runCuration()
+	else:
+		# regular run
+		success = bot.run()
+		# if requested, do an additional curation run
+		if args.include_curation:
+			curationSuccess = bot.runCuration()
+			if not curationSuccess:
+				success = False
 	
 	if success:
 		sys.exit(0)
 	else:
 		sys.exit(1)
+		

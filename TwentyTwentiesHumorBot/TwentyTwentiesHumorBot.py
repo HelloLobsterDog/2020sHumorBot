@@ -22,6 +22,14 @@ class TwentyTwentiesHumorBot(object):
 		self.usedDirName = 'used'
 		self.failedDirName = 'failed'
 		
+		self.curationDirName = 'curation'
+		self.successDirName = 'successful'
+		
+		self.detector = ObjectDetector(self.homeDir)
+		self.distorter = Distorter(self.homeDir)
+		self.stupifier = NameStupifier()
+		self.captioner = ImageCaptioner(self.homeDir)
+		
 	def run(self):
 		try:
 			self.validateHomeDir()
@@ -29,10 +37,10 @@ class TwentyTwentiesHumorBot(object):
 			for attempt in range(self.tries):
 				image = self.pickImage()
 				try:
-					objectInImage = ObjectDetector(self.homeDir).objectIdentification(image, os.path.join(self.homeDir, self.identifiedImageDirName))
-					distortedImage = Distorter(self.homeDir).distort(image, os.path.join(self.homeDir, self.bulgedDirName), objectInImage)
-					stupifiedName = NameStupifier().stupify(objectInImage.name)
-					distortedLabeledImage = ImageCaptioner(self.homeDir).writeText(distortedImage, os.path.join(self.homeDir, self.labeledDirName), stupifiedName)
+					objectInImage = self.detector.objectIdentification(image, os.path.join(self.homeDir, self.identifiedImageDirName))
+					distortedImage = self.distorter.distort(image, os.path.join(self.homeDir, self.bulgedDirName), objectInImage)
+					stupifiedName = self.stupifier.stupify(objectInImage.name)
+					distortedLabeledImage = self.captioner.writeText(distortedImage, os.path.join(self.homeDir, self.labeledDirName), stupifiedName)
 				except Exception as e:
 					self.logger.exception("Encountered exception while attempting to process image: " + image)
 					self.markImageAsFailed(image)
@@ -46,6 +54,25 @@ class TwentyTwentiesHumorBot(object):
 		except Exception as e:
 			self.logger.exception("Encountered an exception while attempting to run.")
 			return False
+			
+	def runCuration(self):
+		path = os.path.join(self.homeDir, self.curationDirName, self.inputImageDirName)
+		anyFailures = False
+		for filename in os.listdir(path):
+			imagePath = os.path.join(self.homeDir, self.curationDirName, self.inputImageDirName, filename)
+			self.logger.info("running curation on image at path: " + imagePath)
+			try:
+				objectInImage = self.detector.objectIdentification(imagePath, os.path.join(self.homeDir, self.curationDirName, self.identifiedImageDirName))
+				distortedImage = self.distorter.distort(imagePath, os.path.join(self.homeDir, self.curationDirName, self.bulgedDirName), objectInImage)
+				stupifiedName = self.stupifier.stupify(objectInImage.name)
+				distortedLabeledImage = self.captioner.writeText(distortedImage, os.path.join(self.homeDir, self.curationDirName, self.labeledDirName), stupifiedName)
+				self.markImageAsUsedCuration(imagePath)
+			except Exception as e:
+				self.logger.exception("Encountered exception while attempting to process image: " + imagePath)
+				self.markImageAsFailedCuration(imagePath)
+				anyFailures = True
+				continue
+		return not anyFailures
 		
 		
 		
@@ -68,5 +95,15 @@ class TwentyTwentiesHumorBot(object):
 		
 	def markImageAsFailed(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.failedDirName, os.path.basename(path))
+		os.rename(path, pathToMoveTo)
+		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
+		
+	def markImageAsUsedCuration(self, path):
+		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.successDirName, os.path.basename(path))
+		os.rename(path, pathToMoveTo)
+		self.logger.info("image %s moved to success folder: %s", path, pathToMoveTo)
+		
+	def markImageAsFailedCuration(self, path):
+		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.failedDirName, os.path.basename(path))
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
