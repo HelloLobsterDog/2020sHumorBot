@@ -8,7 +8,6 @@ from pexels_api import API
 class PexelsDownloader(object):
 	def __init__(self, apiKey, folder):
 		self.logger = logging.getLogger('PexelsDownloader')
-		print(apiKey)
 		self.api = API(apiKey)
 		self.folder = folder
 		
