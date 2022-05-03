@@ -13,3 +13,6 @@ rmdir .\htmlcov /S /Q
 del .\MANIFEST
 del .\TwentyTwentiesHumorBot.spec
 del .\.coverage
+
+cd PexelsDownloader
+call clean.bat
