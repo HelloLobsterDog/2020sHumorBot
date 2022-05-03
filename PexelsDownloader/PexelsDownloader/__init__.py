@@ -9,7 +9,7 @@ import codecs
 
 from .PexelsDownloader import PexelsDownloader
 
-__version__ = '0.9.0'
+__version__ = '1.0.0'
 
 
 
@@ -23,6 +23,8 @@ def parseArgs():
 	parser.add_argument('--dir', '-d', help = "Specifies the directory into which downloaded photos are written.")
 	
 	parser.add_argument('--log-dir', default = "", help = 'Logs will be written to the directory provided. By default, logs are only written to stdout.')
+	
+	parser.add_argument('--downloaded-list', '-l', default="", help="path to a file containing a list of photo IDs that have already been downloaded.")
 	
 	parser.add_argument("--number", '-n', default=50, type=int, help = "Number of photos to download.")
 	parser.add_argument("--number-per-page", default=10, type=int, help = "Number of photos to download per page. Setting this correctly helps avoid taxing pexel's servers too much, but it does not usually require modification.")
@@ -76,7 +78,7 @@ def main(overrideCuration = False):
 	makeLoggers(args.log_dir, args.log_dir, verbose)
 	
 	try:
-		downloader = PexelsDownloader(loadKey(args.key_file), args.dir)
+		downloader = PexelsDownloader(loadKey(args.key_file), args.dir, downloadedPath = args.downloaded_list)
 		downloader.download(args.query, totalImages = args.number, imagesPerPage = args.number_per_page)
 		success = True
 	except Exception as e:
