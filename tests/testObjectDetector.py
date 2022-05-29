@@ -1,13 +1,21 @@
 import unittest
 import tempfile
 import os.path
-from TwentyTwentiesHumorBot import ObjectDetector
+from TwentyTwentiesHumorBot import ObjectDetector, NoDetectedObjectsError
 
 class ObjectDetectorTests(unittest.TestCase):
 	
 	def setUp(self):
 		self.detector = ObjectDetector("test_home")
 		self.filename = "pexels - 1170986 - EVG_Kowalievska - 'cat'.jpg"
+		self.noObjectsFilename = "pexels - 1029618 - Scott_Webb - 'building'.jpg"
+	
+	def testNoDetectedObjectsThrows(self):
+		if not os.path.exists(os.path.join("test_home", "model")):
+			raise RuntimeError("Model file not accessible. The model is not legally redistributable, so it is not available in source control, so please provide one in the directory test_home/model")
+		with tempfile.TemporaryDirectory() as tempdir:
+			self.assertRaises(NoDetectedObjectsError, self.detector.objectIdentification, os.path.join("test_data", self.noObjectsFilename), tempdir)
+		
 	
 	def testOutputMatchesExpected(self):
 		if not os.path.exists(os.path.join("test_home", "model")):

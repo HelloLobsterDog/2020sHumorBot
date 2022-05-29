@@ -8,6 +8,9 @@ class IdentifiedObject(object):
 	def __init__(self, name, rect):
 		self.name = name
 		self.rect = rect # tuple of (x1, y1, x2, y2)
+		
+class NoDetectedObjectsError(RuntimeError):
+	pass
 
 class ObjectDetector(object):
 	def __init__(self, homeDir, minProbability = 30):
@@ -29,7 +32,7 @@ class ObjectDetector(object):
 		self.logger.info("Successfully detected %s objects.", str(len(detections)))
 		
 		if len(detections) == 0:
-			raise RuntimeError("Detected no objects!")
+			raise NoDetectedObjectsError("Detected no objects!")
 		
 		things = []
 		for thing in detections:
