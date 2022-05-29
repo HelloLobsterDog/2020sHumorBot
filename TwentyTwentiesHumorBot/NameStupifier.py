@@ -1,10 +1,11 @@
 import logging
-import random
 import re
 
 class NameStupifier(object):
-	def __init__(self):
+	def __init__(self, rand):
 		self.logger = logging.getLogger('2020sHumorBot').getChild('NameStupifier')
+		self.rand = rand
+		
 		self.minIterations = 1
 		self.maxIterations = 2
 		self.stupifiers = [self._simpleReplace, self._flipLetters]
@@ -35,10 +36,10 @@ class NameStupifier(object):
 		]]
 		
 	def stupify(self, name):
-		iterations = random.randrange(self.minIterations, self.maxIterations + 1)
+		iterations = self.rand.randrange(self.minIterations, self.maxIterations + 1)
 		self.logger.info("Stupifying name '" + name + "' with " + str(iterations) + " iterations.")
 		for i in range(iterations):
-			name = random.choice(self.stupifiers)(name)
+			name = self.rand.choice(self.stupifiers)(name)
 			self.logger.info("Stupified name after iteration " + str(i + 1) + ": " + name)
 		return name
 	
@@ -52,7 +53,7 @@ class NameStupifier(object):
 		# actually do the replace
 		if viable:
 			self.logger.debug("name '" + name + "' has " + str(len(viable)) + " possible replacements: " + str(viable))
-			replacement = random.choice(viable)
+			replacement = self.rand.choice(viable)
 			self.logger.info("Making replacement in name '" + name + "': '" + str(replacement[0].pattern) + "'->'" + replacement[1] + "'")
 			return replacement[0].sub(replacement[1], name)
 		else:
@@ -62,7 +63,7 @@ class NameStupifier(object):
 	def _flipLetters(self, name):
 		if len(name) < 2: # can't flip two letters if there aren't two letters
 			return name
-		start = random.randrange(len(name)-1)
+		start = self.rand.randrange(len(name)-1)
 		self.logger.info("flipping letters in name " + name + " at index " + str(start))
 		before = name[:start]
 		after = name[start+2:]

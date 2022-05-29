@@ -14,6 +14,7 @@ class TwentyTwentiesHumorBot(object):
 		self.homeDir = homeDir
 		self.tries = tries
 		self.logger = logging.getLogger('2020sHumorBot')
+		self.rand = random.Random()
 		
 		self.inputImageDirName = 'input'
 		self.identifiedImageDirName = 'identified'
@@ -26,8 +27,8 @@ class TwentyTwentiesHumorBot(object):
 		self.successDirName = 'successful'
 		
 		self.detector = ObjectDetector(self.homeDir)
-		self.distorter = Distorter(self.homeDir)
-		self.stupifier = NameStupifier()
+		self.distorter = Distorter(self.homeDir, self.rand)
+		self.stupifier = NameStupifier(self.rand)
 		self.captioner = ImageCaptioner(self.homeDir)
 		
 	def run(self):
@@ -36,6 +37,7 @@ class TwentyTwentiesHumorBot(object):
 			
 			for attempt in range(self.tries):
 				image = self.pickImage()
+				self.initializeRandom(image)
 				try:
 					objectInImage = self.detector.objectIdentification(image, os.path.join(self.homeDir, self.identifiedImageDirName))
 					distortedImage = self.distorter.distort(image, os.path.join(self.homeDir, self.bulgedDirName), objectInImage)
@@ -59,6 +61,7 @@ class TwentyTwentiesHumorBot(object):
 		path = os.path.join(self.homeDir, self.curationDirName, self.inputImageDirName)
 		anyFailures = False
 		for filename in os.listdir(path):
+			self.initializeRandom(filename)
 			imagePath = os.path.join(self.homeDir, self.curationDirName, self.inputImageDirName, filename)
 			self.logger.info("running curation on image at path: " + imagePath)
 			try:
@@ -89,7 +92,22 @@ class TwentyTwentiesHumorBot(object):
 		return picked
 		
 	def markImageAsUsed(self, path):
-		pathToMoveTo = os.path.join(self.homeDir, self.usedDirName, os.path.basename(path))
+		currentFilename = os.path.basename(path)
+		# increment the number in the name to get a slightly different result next time
+		splitName = filename.split(" ", 1)
+		firstSection = splitName[0]
+		secondSection = splitName[1]
+		try:
+			number = int(firstSection)
+		except Exception as e:
+			if self.logger.isEnabledFor(logging.DEBUG):
+				self.logger.exception("exception encountered while attempting to make string into an integer: %s", firstSection)
+			number = 0
+			secondSection = " - " + currentFilename # The first section is not a number, so we're going to add a number to the original filename for them, instead of just incrementing
+		number += 1
+		incrementedFilename = str(number) + secondSection
+		# move
+		pathToMoveTo = os.path.join(self.homeDir, self.usedDirName, incrementedFilename)
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to used folder: %s", path, pathToMoveTo)
 		
@@ -107,3 +125,14 @@ class TwentyTwentiesHumorBot(object):
 		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.failedDirName, os.path.basename(path))
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
+		
+	def initializeRandom(self, imagePath):
+		filename = os.path.basename(imagePath)
+		firstSection = filename.split(" ", 1)[0]
+		try:
+			number = int(firstSection)
+		except Exception as e:
+			if self.logger.isEnabledFor(logging.DEBUG):
+				self.logger.exception("exception encountered while attempting to make string into an integer: %s", firstSection)
+			number = 1
+		self.rand.seed()

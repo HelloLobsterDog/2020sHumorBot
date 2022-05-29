@@ -1,15 +1,15 @@
 import logging
 import os.path
-import random
 import math
 
 import cv2
 import numpy
 
 class Distorter(object):
-	def __init__(self, homeDir):
+	def __init__(self, homeDir, rand):
 		self.logger = logging.getLogger('2020sHumorBot').getChild('Distorter')
 		self.homeDir = homeDir
+		self.rand = rand
 		
 		self.bulgeAmountMin = 0.8
 		self.bulgeAmountMax = 0.95
@@ -28,14 +28,14 @@ class Distorter(object):
 		
 		objectCenterX = ((objectInImage.rect[2] - objectInImage.rect[0]) / 2) + objectInImage.rect[0]
 		objectCenterY = ((objectInImage.rect[3] - objectInImage.rect[1]) / 2) + objectInImage.rect[1]
-		bulgeCenterX = random.randrange(objectInImage.rect[0], objectInImage.rect[2])
-		bulgeCenterY = random.randrange(objectInImage.rect[1], objectInImage.rect[3])
+		bulgeCenterX = self.rand.randrange(objectInImage.rect[0], objectInImage.rect[2])
+		bulgeCenterY = self.rand.randrange(objectInImage.rect[1], objectInImage.rect[3])
 		distanceCenterX = objectCenterX - bulgeCenterX
 		distanceCenterY = objectCenterY - bulgeCenterY
 		bulgeCenterX += distanceCenterX * self.bulgeCenteringFactor
 		bulgeCenterY += distanceCenterY * self.bulgeCenteringFactor
 		radius = max(objectInImage.rect[2] - objectInImage.rect[0], objectInImage.rect[3] - objectInImage.rect[1]) * self.bulgeRadiusMultiplier
-		amount = random.uniform(self.bulgeAmountMin, self.bulgeAmountMax)
+		amount = self.rand.uniform(self.bulgeAmountMin, self.bulgeAmountMax)
 		scaleY = 1
 		scaleX = 1
 		self.logger.info("bulging image centered at (" + str(bulgeCenterX) + ", " + str(bulgeCenterY) + ") (random position moved toward real center by " + str(distanceCenterX * self.bulgeCenteringFactor) + ", " + str(distanceCenterY * self.bulgeCenteringFactor) + ") with radius " + str(radius) + " by amount " + str(amount))
