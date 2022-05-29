@@ -8,12 +8,12 @@ import logging.handlers
 from .TwentyTwentiesHumorBot import TwentyTwentiesHumorBot
 
 from .ObjectDetector import ObjectDetector, IdentifiedObject, NoDetectedObjectsError
-from .ImageTweeter import ImageTweeter
+from .ImageTweeter import ImageTweeter, BotIntegratedEasyTweeter
 from .Distorter import Distorter
 from .ImageCaptioner import ImageCaptioner
 from .NameStupifier import NameStupifier
 
-__version__ = '0.6.3'
+__version__ = '0.6.4'
 
 
 

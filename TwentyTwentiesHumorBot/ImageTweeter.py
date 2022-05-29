@@ -8,6 +8,7 @@ class BotIntegratedEasyTweeter(EasyTweeter):
 		
 	
 class ImageTweeter(object):
+	botClass = BotIntegratedEasyTweeter # makes the unit test easier to write
 	def __init__(self, homeDir, twitterInteractionCheckInterval = 5):
 		self.logger = logging.getLogger('2020sHumorBot').getChild('ImageTweeter')
 		
@@ -16,7 +17,7 @@ class ImageTweeter(object):
 	
 	def tweetImage(self, imagePath):
 		self.logger.debug("tweeting image...")
-		bot = BotIntegratedEasyTweeter(self.homeDir, logger = self.logger.getChild("easytweeter"))
+		bot = self.botClass(self.homeDir, logger = self.logger.getChild("easytweeter"))
 		try:
 			bot.tweetImage(imagePath)
 			bot.checkForUpdates(self.twitterInteractionCheckInterval, directMessages = False)
