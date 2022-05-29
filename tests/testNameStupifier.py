@@ -5,8 +5,7 @@ from TwentyTwentiesHumorBot import NameStupifier
 class NameStupifierTests(unittest.TestCase):
 	
 	def setUp(self):
-		random.seed(694201337)
-		self.stupifier = NameStupifier()
+		self.stupifier = NameStupifier(random.Random(694201337))
 	
 	def testHappyPath(self):
 		self.assertEqual(self.stupifier.stupify("goose"), "gossoe") # 2 iterations, flip then replace.
@@ -34,7 +33,6 @@ class NameStupifierTests(unittest.TestCase):
 		
 		
 	def manyWords(self): # add test to the name of this to do some manual QA on the output
-		random.seed()
 		words = []
 		with open('..\\englishDictionary.txt') as file:
 			for word in file:
