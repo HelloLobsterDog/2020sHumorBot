@@ -57,7 +57,7 @@ class NameStupifier(object):
 			self.logger.info("Making replacement in name '" + name + "': '" + str(replacement[0].pattern) + "'->'" + replacement[1] + "'")
 			return replacement[0].sub(replacement[1], name)
 		else:
-			self.logger.warning("unable to find a simple replace match for name: " + name) # TODO: is this all we want to do if we can't find any match?
+			self.logger.warning("unable to find a simple replace match for name: " + name)
 			return name
 			
 	def _flipLetters(self, name):
