@@ -8,6 +8,7 @@ rmdir .\PexelsDownloader\__pycache__ /S /Q
 rmdir .\PexelsDownloader.egg-info /S /Q
 rmdir .\tests\__pycache__ /S /Q
 rmdir .\htmlcov /S /Q
+rmdir .\venv /S /Q
 
 del .\MANIFEST
 del .\PexelsDownloader.spec
