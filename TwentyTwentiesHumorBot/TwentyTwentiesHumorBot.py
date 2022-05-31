@@ -126,6 +126,8 @@ class TwentyTwentiesHumorBot(object):
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
 		
+		
+		
 	def initializeRandom(self, imagePath):
 		filename = os.path.basename(imagePath)
 		firstSection = filename.split(" ", 1)[0]
@@ -136,3 +138,4 @@ class TwentyTwentiesHumorBot(object):
 				self.logger.exception("exception encountered while attempting to make string into an integer: %s", firstSection)
 			number = 1
 		self.rand.seed()
+		
