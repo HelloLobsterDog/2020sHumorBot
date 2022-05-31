@@ -15,5 +15,5 @@ class ImageTweeterTests(unittest.TestCase):
 		self.tweeter = ImageTweeter("asdf", twitterInteractionCheckInterval = 6)
 		self.tweeter.tweetImage("pretend this is a real file path")
 		
-		mockEasyTweeter.tweetImage.assert_called_with("pretend this is a real file path")
+		mockEasyTweeter.tweetMedia.assert_called_with("pretend this is a real file path")
 		mockEasyTweeter.checkForUpdates.assert_called_with(6, directMessages = False)

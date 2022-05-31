@@ -48,6 +48,8 @@ class ImageCaptioner(object):
 		outputImage.save(outputPath)
 		outputImage.close()
 		inputImage.close()
+		
+		return outputPath
 	
 	def _getFontFilename(self):
 		if self.fontFilename == None:

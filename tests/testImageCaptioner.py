@@ -32,6 +32,7 @@ class ImageCaptionerTests(unittest.TestCase):
 			raise RuntimeError("Font file not accessible. The font is not legally redistributable, so it is not available in source control, so please provide one in the directory test_home/font")
 		with tempfile.TemporaryDirectory() as tempdir:
 			output = self.captioner.writeText(os.path.join("test_data", self.filename), tempdir, "test")
+			self.assertEqual(output, os.path.join(tempdir, self.filename))
 			self.assertTrue(os.path.exists(os.path.join(tempdir, self.filename)))
 			self.assertSameImage(os.path.join(tempdir, self.filename), os.path.join("test_data", self.expectedFilename))
 	

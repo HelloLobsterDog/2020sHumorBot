@@ -1,4 +1,5 @@
 import logging
+import os.path
 
 from EasyTweeter import EasyTweeter
 		
@@ -19,7 +20,7 @@ class ImageTweeter(object):
 		self.logger.debug("tweeting image...")
 		bot = self.botClass(self.homeDir, logger = self.logger.getChild("easytweeter"))
 		try:
-			bot.tweetImage(imagePath)
+			bot.tweetMedia(imagePath)
 			bot.checkForUpdates(self.twitterInteractionCheckInterval, directMessages = False)
 			
 		except Exception as e:

@@ -94,9 +94,14 @@ class TwentyTwentiesHumorBot(object):
 	def markImageAsUsed(self, path):
 		currentFilename = os.path.basename(path)
 		# increment the number in the name to get a slightly different result next time
-		splitName = filename.split(" ", 1)
+		splitName = path.split(" ", 1)
 		firstSection = splitName[0]
-		secondSection = splitName[1]
+		if len(splitName) > 1:
+			secondSection = splitName[1]
+		else:
+			# no spaces in the name.
+			firstSection = ""
+			secondSection = splitName[0]
 		try:
 			number = int(firstSection)
 		except Exception as e:
