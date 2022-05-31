@@ -101,7 +101,7 @@ class TwentyTwentiesHumorBot(object):
 			number = int(firstSection)
 		except Exception as e:
 			if self.logger.isEnabledFor(logging.DEBUG):
-				self.logger.exception("exception encountered while attempting to make string into an integer: %s", firstSection)
+				self.logger.exception("exception encountered while attempting to make string into an integer: %s This exception will be ignored, using 1 as the number.", firstSection)
 			number = 0
 			secondSection = " - " + currentFilename # The first section is not a number, so we're going to add a number to the original filename for them, instead of just incrementing
 		number += 1
@@ -135,7 +135,7 @@ class TwentyTwentiesHumorBot(object):
 			number = int(firstSection)
 		except Exception as e:
 			if self.logger.isEnabledFor(logging.DEBUG):
-				self.logger.exception("exception encountered while attempting to make string into an integer: %s", firstSection)
+				self.logger.exception("exception encountered while attempting to make string into an integer: %s This exception will be ignored, using 1 as the number.", firstSection)
 			number = 1
 		self.rand.seed()
 		
