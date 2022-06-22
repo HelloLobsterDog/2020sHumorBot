@@ -30,32 +30,31 @@ class TwentyTwentiesHumorBot(object):
 		self.distorter = Distorter(self.homeDir, self.rand)
 		self.stupifier = NameStupifier(self.rand)
 		self.captioner = ImageCaptioner(self.homeDir)
+		self.imageTweeter = ImageTweeter(self.homeDir)
 		
 	def run(self):
 		try:
 			self.validateHomeDir()
 			
 			for attempt in range(self.tries):
-				image = self.pickImage()
-				self.initializeRandom(image)
+				imagePath = self.pickImage()
+				self.initializeRandom(imagePath)
 				try:
-					objectInImage = self.detector.objectIdentification(image, os.path.join(self.homeDir, self.identifiedImageDirName))
-					distortedImage = self.distorter.distort(image, os.path.join(self.homeDir, self.bulgedDirName), objectInImage)
+					objectInImage = self.detector.objectIdentification(imagePath, os.path.join(self.homeDir, self.identifiedImageDirName))
+					distortedImage = self.distorter.distort(imagePath, os.path.join(self.homeDir, self.bulgedDirName), objectInImage)
 					stupifiedName = self.stupifier.stupify(objectInImage.name)
 					distortedLabeledImage = self.captioner.writeText(distortedImage, os.path.join(self.homeDir, self.labeledDirName), stupifiedName)
 				except Exception as e:
-					self.logger.exception("Encountered exception while attempting to process image: " + image)
-					self.markImageAsFailed(image)
+					self.logger.exception("Encountered exception while attempting to process image: " + imagePath)
+					self.markImageAsFailed(imagePath)
 					continue
-				ImageTweeter(self.homeDir).tweetImage(distortedLabeledImage)
-				self.markImageAsUsed(image)
-				break
-			
-			return True
+				self.imageTweeter.tweetImage(distortedLabeledImage)
+				self.markImageAsUsed(imagePath)
+				return True
 			
 		except Exception as e:
 			self.logger.exception("Encountered an exception while attempting to run.")
-			return False
+		return False
 			
 	def runCuration(self):
 		path = os.path.join(self.homeDir, self.curationDirName, self.inputImageDirName)

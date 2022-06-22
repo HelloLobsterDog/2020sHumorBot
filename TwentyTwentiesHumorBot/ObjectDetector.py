@@ -2,8 +2,6 @@ import logging
 import os
 import os.path
 
-from imageai.Detection import ObjectDetection
-
 class IdentifiedObject(object):
 	def __init__(self, name, rect):
 		self.name = name
@@ -24,6 +22,7 @@ class ObjectDetector(object):
 	
 	def objectIdentification(self, pathToImage, outputFolder):
 		if self.detector == None:
+			from imageai.Detection import ObjectDetection
 			self.detector = ObjectDetection()
 			self._loadModel(self.detector)
 		
