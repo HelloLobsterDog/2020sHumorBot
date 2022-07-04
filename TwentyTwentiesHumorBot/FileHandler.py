@@ -26,8 +26,17 @@ class FileHandler(object):
 		if not os.path.exists(path):
 			raise RuntimeError("input image directory does not exist: " + path)
 		filesInDir = os.listdir(path)
+		# move everything out of used into input folder
+		if os.path.exists(os.path.join(self.homeDir, self.usedDirName)):
+			filesInUsed = os.listdir(os.path.join(self.homeDir, self.usedDirName))
+			if filesInUsed:
+				self.logger.info("moving all files from used directory to input to recycle them...")
+				self._moveEverythingFromDirToDir(os.path.join(self.homeDir, self.usedDirName), os.path.join(self.homeDir, self.inputImageDirName))
+				filesInDir = os.listdir(path)
+		# check again if it's empty
 		if not filesInDir:
 			raise RuntimeError("input image directory is empty.")
+		# pick one
 		picked = os.path.join(self.homeDir, self.inputImageDirName, random.choice(filesInDir))
 		self.logger.info("Picked image: %s", picked)
 		# setup intermediate directories
@@ -35,6 +44,11 @@ class FileHandler(object):
 		os.makedirs(self.distortedDir, exist_ok = True)
 		os.makedirs(self.labeledDir, exist_ok = True)
 		return picked
+	
+	def _moveEverythingFromDirToDir(self, inputDir, outputDir):
+		for f in os.listdir(inputDir):
+			self.logger.debug('moving %s from input directory to output directory')
+			os.rename(os.path.join(inputDir, f), os.path.join(outputDir, f))
 		
 	def markImageAsFailed(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.failedDirName, os.path.basename(path))
