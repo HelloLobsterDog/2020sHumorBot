@@ -1,6 +1,7 @@
 import logging
 import os
 import os.path
+import re
 
 class IdentifiedObject(object):
 	def __init__(self, name, rect):
@@ -16,6 +17,8 @@ class ObjectDetector(object):
 		
 		self.homeDir = homeDir
 		self.minProbability = minProbability
+		
+		self.idOverrideRegex = re.compile("{.+}")
 		
 		self.detector = None # Hang onto this in between runs to save ourselves time if we're doing curation. Model loading is very expensive.
 	
@@ -39,6 +42,10 @@ class ObjectDetector(object):
 			things.append(IdentifiedObject(thing["name"], thing["box_points"]))
 		things.sort(key=lambda x: self._areaOfBox(x), reverse=True)
 		
+		chosen = things[0]
+		
+		self._idOverride(chosen, pathToImage)
+		
 		return things[0]
 		
 	def _loadModel(self, detector):
@@ -60,3 +67,10 @@ class ObjectDetector(object):
 		
 	def _areaOfBox(self, obj):
 		return (obj.rect[2] - obj.rect[0]) * (obj.rect[3] - obj.rect[1])
+	
+	def _idOverride(self, idObject, pathToImage):
+		found = self.idOverrideRegex.search(pathToImage)
+		if found != None:
+			name = pathToImage[found.start() + 1:found.end() - 1]
+			self.logger.info("detected object is overridden to name: " + str(name))
+			idObject.name = name.strip().lower()
