@@ -12,8 +12,9 @@ from .ImageTweeter import ImageTweeter, BotIntegratedEasyTweeter
 from .Distorter import Distorter
 from .ImageCaptioner import ImageCaptioner
 from .NameStupifier import NameStupifier
+from .FileHandler import FileHandler
 
-__version__ = '0.6.5'
+__version__ = '0.6.6'
 
 
 
