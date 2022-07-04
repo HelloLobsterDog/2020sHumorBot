@@ -54,6 +54,8 @@ class ImageCaptioner(object):
 	def _getFontFilename(self):
 		if self.fontFilename == None:
 			fontDir = os.path.join(self.homeDir, "font")
+			if not os.path.exists(fontDir):
+				raise RuntimeError("Font directory does not exist: " + fontDir)
 			fontPathContents = os.listdir(fontDir)
 			if len(fontPathContents) > 1:
 				raise RuntimeError("More than one file is present in the font directory. Don't know which font to use.")

@@ -52,6 +52,8 @@ class ObjectDetector(object):
 		detector.setModelTypeAsRetinaNet()
 		
 		modelDir = os.path.join(self.homeDir, "model")
+		if not os.path.exists(modelDir):
+			raise RuntimeError("Model directory does not exist: " + modelDir)
 		modelPathContents = os.listdir(modelDir)
 		if len(modelPathContents) > 1:
 			raise RuntimeError("More than one file is present in the model directory. Don't know which model to use.")
