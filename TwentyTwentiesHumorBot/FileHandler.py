@@ -20,6 +20,7 @@ class FileHandler(object):
 		self.successDirName = 'successful'
 		
 		
+		
 	def pickImage(self):
 		path = os.path.join(self.homeDir, self.inputImageDirName)
 		filesInDir = os.listdir(path)
@@ -59,16 +60,6 @@ class FileHandler(object):
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to used folder: %s", path, pathToMoveTo)
 		
-	def markImageAsUsedCuration(self, path):
-		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.successDirName, os.path.basename(path))
-		os.rename(path, pathToMoveTo)
-		self.logger.info("image %s moved to success folder: %s", path, pathToMoveTo)
-		
-	def markImageAsFailedCuration(self, path):
-		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.failedDirName, os.path.basename(path))
-		os.rename(path, pathToMoveTo)
-		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
-		
 	@property
 	def identifiedDir(self):
 		return os.path.join(self.homeDir, self.identifiedImageDirName)
@@ -80,6 +71,22 @@ class FileHandler(object):
 	@property
 	def labeledDir(self):
 		return os.path.join(self.homeDir, self.labeledDirName)
+		
+		
+	
+	def curationPaths(self):
+		for filename in os.listdir(self.inputDirCuration):
+			yield filename
+		
+	def markImageAsUsedCuration(self, path):
+		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.successDirName, os.path.basename(path))
+		os.rename(path, pathToMoveTo)
+		self.logger.info("image %s moved to success folder: %s", path, pathToMoveTo)
+		
+	def markImageAsFailedCuration(self, path):
+		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.failedDirName, os.path.basename(path))
+		os.rename(path, pathToMoveTo)
+		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
 		
 	@property
 	def inputDirCuration(self):

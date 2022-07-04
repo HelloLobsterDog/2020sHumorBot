@@ -50,7 +50,7 @@ class TwentyTwentiesHumorBot(object):
 			
 	def runCuration(self):
 		anyFailures = False
-		for filename in os.listdir(self.fileHandler.inputDirCuration):
+		for filename in self.fileHandler.curationPaths():
 			self.initializeRandom(filename)
 			imagePath = os.path.join(self.fileHandler.inputDirCuration, filename)
 			self.logger.info("running curation on image at path: " + imagePath)
