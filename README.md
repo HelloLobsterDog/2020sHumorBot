@@ -27,14 +27,23 @@ Because of potential licensing issues and file size constraints, a fair amount o
 ### Provide Data
 Images that should be used should be placed in the `input` directory inside the bot's home directory.
 
+Any images can be used, but the canonical instance of the bot uses image downloaded from Pexels (via the downloader script in the PexelsDownloader folder), because the license of that website does not require attribution.
+
 ### Provide a Model for ImageAI
 As object detection is used to identify what is in the images and where within the image it is, an AI model is required. It should be placed in the `model` directory within the bot's home directory. Only a single file should be placed there at a time.
+
+The model is available in the [ImageAI documentation](https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Detection/README.md).
+
+### Provide a Font
+The impact font which is used to label the memes is provided with your system, and it should be placed in the `font` directory inside the bot's home directory.
 
 ### Provide Credentials
 The file `credentials.ini` should be present in the bot's home directory, and it should contain the authentication information for twitter so the bot can post.
 
+This file is in the format expected by [EasyTweeter](https://github.com/HelloLobsterDog/EasyTweeter).
+
 ### Running
-Once the prerequisites are available, running the bot is as simple as running `TwentyTwentiesHumorBot`
+Once the prerequisites are available, running the bot is as simple as running `TwentyTwentiesHumorBot` in your shell of choice.
 
 #### Command Line Arguments
 The following command line arguments are available:
