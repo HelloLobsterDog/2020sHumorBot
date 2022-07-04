@@ -52,3 +52,5 @@ The following command line arguments are available:
  - `--log-level`: override the default log level. Accepts: `NOT_SET`, `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. Defaults to `INFO`
  - `--verbose` (or `-v`): logs all output to stdout, in addition to log files (this is the default). Mutually exclusive with --quiet.
  - `--quiet` (or `-q`): disables all logging to stdout/stderr. All logging to the log files will be unaffected. Mutually exclusive with --verbose.
+ - `--curation` (or `-c`): Runs all of the images in the home_dir/curation/input through the bot so you can see the output, without making any posts to twitter. Useful for ensuring the images you're giving the bot will work and be high quality.
+ - `--include-curation` (or `-ic`): will run one full execution of the bot as usual, and then the curation explained above.
