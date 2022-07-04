@@ -23,15 +23,22 @@ class FileHandler(object):
 		
 	def pickImage(self):
 		path = os.path.join(self.homeDir, self.inputImageDirName)
+		if not os.path.exists(path):
+			raise RuntimeError("input image directory does not exist: " + path)
 		filesInDir = os.listdir(path)
 		if not filesInDir:
 			raise RuntimeError("input image directory is empty.")
 		picked = os.path.join(self.homeDir, self.inputImageDirName, random.choice(filesInDir))
 		self.logger.info("Picked image: %s", picked)
+		# setup intermediate directories
+		os.makedirs(self.identifiedDir, exist_ok = True)
+		os.makedirs(self.distortedDir, exist_ok = True)
+		os.makedirs(self.labeledDir, exist_ok = True)
 		return picked
 		
-	def markImageAsFailed(self, pathToImage):
+	def markImageAsFailed(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.failedDirName, os.path.basename(path))
+		os.makedirs(os.path.join(self.homeDir, self.failedDirName), exist_ok = True)
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
 		
@@ -57,6 +64,7 @@ class FileHandler(object):
 		incrementedFilename = str(number) + secondSection
 		# move
 		pathToMoveTo = os.path.join(self.homeDir, self.usedDirName, incrementedFilename)
+		os.makedirs(os.path.join(self.homeDir, self.usedDirName), exist_ok = True)
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to used folder: %s", path, pathToMoveTo)
 		
@@ -75,16 +83,25 @@ class FileHandler(object):
 		
 	
 	def curationPaths(self):
+		if not os.path.exists(self.inputDirCuration):
+			raise RuntimeError("Curation input image directory does not exist: " + path)
+		# setup intermediate directories
+		os.makedirs(self.identifiedDirCuration, exist_ok = True)
+		os.makedirs(self.distortedDirCuration, exist_ok = True)
+		os.makedirs(self.labeledDirCuration, exist_ok = True)
+		# get the images
 		for filename in os.listdir(self.inputDirCuration):
 			yield filename
 		
 	def markImageAsUsedCuration(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.successDirName, os.path.basename(path))
+		os.makedirs(os.path.join(self.homeDir, self.curationDirName, self.successDirName), exist_ok = True)
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to success folder: %s", path, pathToMoveTo)
 		
 	def markImageAsFailedCuration(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.failedDirName, os.path.basename(path))
+		os.makedirs(os.path.join(self.homeDir, self.curationDirName, self.failedDirName), exist_ok = True)
 		os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
 		
