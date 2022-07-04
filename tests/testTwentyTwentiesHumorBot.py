@@ -4,7 +4,7 @@ import os.path
 
 from TwentyTwentiesHumorBot import TwentyTwentiesHumorBot, IdentifiedObject
 
-class ImageTweeterTests(unittest.TestCase):
+class BotTests(unittest.TestCase):
 	
 	def testRunHappyPath(self):
 		filename = 'pick-a-pet-1156x650-1.jpg'

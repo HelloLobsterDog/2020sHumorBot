@@ -13,7 +13,7 @@ from .Distorter import Distorter
 from .ImageCaptioner import ImageCaptioner
 from .NameStupifier import NameStupifier
 
-__version__ = '0.6.4'
+__version__ = '0.6.5'
 
 
 
