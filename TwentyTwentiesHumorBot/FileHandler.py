@@ -59,10 +59,10 @@ class FileHandler(object):
 	def markImageAsUsed(self, path):
 		currentFilename = os.path.basename(path)
 		# increment the number in the name to get a different result next time
-		splitName = path.split(" ", 1)
+		splitName = currentFilename.split(" ", 1)
 		firstSection = splitName[0]
 		if len(splitName) > 1:
-			secondSection = splitName[1]
+			secondSection = " " + splitName[1]
 		else:
 			# no spaces in the name.
 			firstSection = ""
