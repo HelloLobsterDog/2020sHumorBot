@@ -116,10 +116,10 @@ class ImageTweeterTests(unittest.TestCase):
 		
 		self.assertTrue(bot.runCuration())
 		
-		bot.detector.objectIdentification.assert_called_once_with(os.path.join('test_home', 'curation', 'input', filename), os.path.join('test_home', 'curation', 'identified'))
-		bot.distorter.distort.assert_called_once_with(os.path.join('test_home', 'curation', 'input', filename), os.path.join('test_home', 'curation', 'bulged'), idObj)
-		bot.stupifier.stupify.assert_called_once_with('dog')
-		bot.captioner.writeText.assert_called_once_with('distorted', os.path.join('test_home', 'curation', 'output'), 'stupified')
+		bot.detector.objectIdentification.assert_called_with(os.path.join('test_home', 'curation', 'input', filename), os.path.join('test_home', 'curation', 'identified'))
+		bot.distorter.distort.assert_called_with(os.path.join('test_home', 'curation', 'input', filename), os.path.join('test_home', 'curation', 'bulged'), idObj)
+		bot.stupifier.stupify.assert_called_with('dog')
+		bot.captioner.writeText.assert_called_with('distorted', os.path.join('test_home', 'curation', 'output'), 'stupified')
 		self.assertEquals(bot.imageTweeter.tweetImage.call_count, 0)
 	
 	def testRunCurationSuccessFailSuccess(self):
