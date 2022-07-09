@@ -7,16 +7,16 @@ When it runs, the ImageAI library is used to identify what is in the image, a ha
 Below are some examples of it's output, pretty well covering the gamut of humor, quality, and stupidity.
 
 ![distorted image of a person biking, labelled 'wet'](examples/output/{speed}_-_12838_-_Chris_Peeters.jpg)
-![](examples/output/1194713 - Marta_Branco.jpg)
-![](examples/output/821736 - Alex_Andrews.jpg)
-![](examples/output/{wet} - 7210296 - Blue_Bird.jpg)
-![](examples/output/129634 - freestocks.org.jpg)
-![](examples/output/874158 - Andrea_Piacquadio.jpg)
-![](examples/output/1131458 - Min_An.jpg)
-![](examples/output/225406 - mali_maeder.jpg)
-![](examples/output/pexels - 617278 - Kelvin_Valerio - 'cat'.jpg)
-![](examples/output/1183434 - Amir__Ghoorchiani.jpg)
-![](examples/output/62640 - Fabricio_Trujillo.jpg)
+![distorted image of a keyboard, labelled 'shcishshorsh'](examples/output/1194713_-_Marta_Branco.jpg)
+![distorted image of a cat, labelled 'doooog'](examples/output/821736_-_Alex_Andrews.jpg)
+![distorted image of a dog, labelled 'wet'](examples/output/{wet}_-_7210296_-_Blue_Bird.jpg)
+![distorted image of a puppy being petted, labelled 'coouch'](examples/output/129634_-_freestocks.org.jpg)
+![distorted image of a person, labelled 'person'](examples/output/874158_-_Andrea_Piacquadio.jpg)
+![distorted image of a plant, labelled 'bobbed blanb'](examples/output/1131458_-_Min_An.jpg)
+![distorted image of a cat, labelled 'cat'](examples/output/225406_-_mali_maeder.jpg)
+![distorted image of a cat, labelled 'cta'](examples/output/pexels_-_617278_-_Kelvin_Valerio_-_'cat'.jpg)
+![distorted image of a cat, labelled 'cat'](examples/output/1183434_-_Amir__Ghoorchiani.jpg)
+![distorted image of a sleeping cat, labelled 'bed'](examples/output/62640_-_Fabricio_Trujillo.jpg)
 
 ## Installing the Bot
 If you want to spin up a competing twitter account of your own with the bot, it can be installed and run a couple of ways.
