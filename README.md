@@ -6,7 +6,7 @@ When it runs, the ImageAI library is used to identify what is in the image, a ha
 ## Examples
 Below are some examples of it's output, pretty well covering the gamut of humor, quality, and stupidity.
 
-![distorted image of a person biking, labelled 'wet'](examples/output/{speed} - 12838 - Chris_Peeters.jpg)
+![distorted image of a person biking, labelled 'wet'](examples/output/{speed}_-_12838_-_Chris_Peeters.jpg)
 ![](examples/output/1194713 - Marta_Branco.jpg)
 ![](examples/output/821736 - Alex_Andrews.jpg)
 ![](examples/output/{wet} - 7210296 - Blue_Bird.jpg)
