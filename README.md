@@ -6,17 +6,17 @@ When it runs, the ImageAI library is used to identify what is in the image, a ha
 ## Examples
 Below are some examples of it's output, pretty well covering the gamut of humor, quality, and stupidity.
 
-![](./examples/output/{speed} - 12838 - Chris_Peeters.jpg)
-![](./examples/output/1194713 - Marta_Branco.jpg)
-![](./examples/output/821736 - Alex_Andrews.jpg)
-![](./examples/output/{wet} - 7210296 - Blue_Bird.jpg)
-![](./examples/output/129634 - freestocks.org.jpg)
-![](./examples/output/874158 - Andrea_Piacquadio.jpg)
-![](./examples/output/1131458 - Min_An.jpg)
-![](./examples/output/225406 - mali_maeder.jpg)
-![](./examples/output/pexels - 617278 - Kelvin_Valerio - 'cat'.jpg)
-![](./examples/output/1183434 - Amir__Ghoorchiani.jpg)
-![](./examples/output/62640 - Fabricio_Trujillo.jpg)
+![](examples/output/{speed} - 12838 - Chris_Peeters.jpg)
+![](examples/output/1194713 - Marta_Branco.jpg)
+![](examples/output/821736 - Alex_Andrews.jpg)
+![](examples/output/{wet} - 7210296 - Blue_Bird.jpg)
+![](examples/output/129634 - freestocks.org.jpg)
+![](examples/output/874158 - Andrea_Piacquadio.jpg)
+![](examples/output/1131458 - Min_An.jpg)
+![](examples/output/225406 - mali_maeder.jpg)
+![](examples/output/pexels - 617278 - Kelvin_Valerio - 'cat'.jpg)
+![](examples/output/1183434 - Amir__Ghoorchiani.jpg)
+![](examples/output/62640 - Fabricio_Trujillo.jpg)
 
 ## Installing the Bot
 If you want to spin up a competing twitter account of your own with the bot, it can be installed and run a couple of ways.
