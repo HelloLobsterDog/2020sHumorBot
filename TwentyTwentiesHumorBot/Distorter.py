@@ -11,10 +11,10 @@ class Distorter(object):
 		self.homeDir = homeDir
 		self.rand = rand
 		
-		self.bulgeAmountMin = 0.8
-		self.bulgeAmountMax = 0.95
-		self.bulgeRadiusMultiplier = 1.1
-		self.bulgeCenteringFactor = 0.5 # .5 results in all coords being moved toward the center of the object by half of their distance
+		self.bulgeAmountMin = 0.85
+		self.bulgeAmountMax = 0.99
+		self.bulgeRadiusMultiplier = 1.4
+		self.bulgeCenteringFactor = 0.4 # .5 results in all coords being moved toward the center of the object by half of their distance
 	
 	def distort(self, pathToImage, outputDir, objectInImage):
 		return self.bulgeImage(pathToImage, outputDir, objectInImage)

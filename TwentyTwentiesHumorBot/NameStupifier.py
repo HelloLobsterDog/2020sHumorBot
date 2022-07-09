@@ -6,7 +6,7 @@ class NameStupifier(object):
 		self.logger = logging.getLogger('2020sHumorBot').getChild('NameStupifier')
 		self.rand = rand
 		
-		self.minIterations = 1
+		self.minIterations = 0
 		self.maxIterations = 2
 		self.stupifiers = [self._simpleReplace, self._flipLetters]
 		

@@ -19,7 +19,7 @@ class NameStupifierTests(unittest.TestCase):
 	
 	def testSimpleReplaceImportantWords(self):
 		# these are words that are known to be in use, or words that the object identification model has come up with before
-		for word in ['dog', 'laptop', 'person', 'car', 'motorcycle', 'bicycle', 'cat', 'keyboard', 'clock', 'cell phone', 'orange', 'dining table', 'boat', 'potted plant', 'tennis racket', 'tv', 'scissors', 'refridgerator', 'chair', 'bench', 'train', 'apple', 'elephant', 'traffic light', 'mouse', 'sink', 'sports ball', 'remote', 'bear', 'bird', 'carrot']:
+		for word in ['dog', 'laptop', 'person', 'car', 'motorcycle', 'bicycle', 'cat', 'keyboard', 'clock', 'cell phone', 'orange', 'dining table', 'boat', 'potted plant', 'tennis racket', 'tv', 'scissors', 'refridgerator', 'chair', 'bench', 'train', 'apple', 'elephant', 'traffic light', 'mouse', 'sink', 'sports ball', 'remote', 'bear', 'bird', 'carrot', 'oven', 'surfboard']:
 			self.assertNotEqual(self.stupifier._simpleReplace(word), word)
 		
 	
