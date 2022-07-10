@@ -1,12 +1,14 @@
 # 2020s Humor Bot
 2020s Humor Bot is a python based twitter bot which takes a random image out of a folder, makes it stupid, and posts it to twitter.
 
+Visit the bot [on twitter at @2020sHumorBot](https://twitter.com/2020sHumorBot)!
+
 When it runs, the ImageAI library is used to identify what is in the image, a hand-built stupification algorithm is applied to the name of the object, the image is distorted at the location of the object, the stupified name of the object is placed on the image in a recognizable meme font, and finally, the image is tweeted via the EasyTweeter library.
 
 ## Examples
 Below are some examples of it's output, pretty well covering the gamut of humor, quality, and stupidity.
 
-![distorted image of a person biking, labelled 'wet'](examples/output/{speed}_-_12838_-_Chris_Peeters.jpg)
+![distorted image of a person biking, labelled 'shpeed'](examples/output/{speed}_-_12838_-_Chris_Peeters.jpg)
 ![distorted image of a keyboard, labelled 'shcishshorsh'](examples/output/1194713_-_Marta_Branco.jpg)
 ![distorted image of a cat, labelled 'doooog'](examples/output/821736_-_Alex_Andrews.jpg)
 ![distorted image of a dog, labelled 'wet'](examples/output/{wet}_-_7210296_-_Blue_Bird.jpg)

@@ -8,7 +8,7 @@ class NameStupifierTests(unittest.TestCase):
 		self.stupifier = NameStupifier(random.Random(694201337))
 	
 	def testHappyPath(self):
-		self.assertEqual(self.stupifier.stupify("goose"), "gossoe") # 2 iterations, flip then replace.
+		self.assertEqual(self.stupifier.stupify("goose"), "gosoe")
 		
 	
 	def testSimpleReplace(self):
