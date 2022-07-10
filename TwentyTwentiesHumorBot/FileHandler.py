@@ -11,7 +11,7 @@ class FileHandler(object):
 		
 		self.inputImageDirName = 'input'
 		self.identifiedImageDirName = 'identified'
-		self.distoredDirName = 'bulged'
+		self.distoredDirName = 'distorted'
 		self.labeledDirName = 'output'
 		self.usedDirName = 'used'
 		self.failedDirName = 'failed'
@@ -27,7 +27,7 @@ class FileHandler(object):
 			raise RuntimeError("input image directory does not exist: " + path)
 		filesInDir = os.listdir(path)
 		# move everything out of used into input folder
-		if os.path.exists(os.path.join(self.homeDir, self.usedDirName)):
+		if not filesInDir and os.path.exists(os.path.join(self.homeDir, self.usedDirName)):
 			filesInUsed = os.listdir(os.path.join(self.homeDir, self.usedDirName))
 			if filesInUsed:
 				self.logger.info("moving all files from used directory to input to recycle them...")
