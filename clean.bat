@@ -17,3 +17,4 @@ del .\.coverage
 
 cd PexelsDownloader
 call clean.bat
+cd ..
