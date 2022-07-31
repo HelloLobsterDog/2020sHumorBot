@@ -6,6 +6,7 @@ import requests
 from pexels_api import API
 
 class PexelsDownloader(object):
+	INVALID_FILENAME_CHARACTERS = [' ', '/', '\\', ':', '|', '"', '*', '?', '<', '>']
 	def __init__(self, apiKey, folder, downloadedPath = ""):
 		self.logger = logging.getLogger('PexelsDownloader')
 		self.api = API(apiKey)
@@ -75,7 +76,10 @@ class PexelsDownloader(object):
 			self.logger.info("url " + url + " has already been downloaded.")
 	
 	def determinePhotoFilename(self, photo, searchUsed):
-		path = "pexels - " + str(photo.id) + " - " + photo.photographer.replace(" ", "_") + " - '" + searchUsed + "'"
+		photographer = photo.photographer
+		for char in self.INVALID_FILENAME_CHARACTERS:
+			photographer = photographer.replace(char, "_")
+		path = "pexels - " + str(photo.id) + " - " + photographer + " - '" + searchUsed + "'"
 		path += "." + photo.extension if not photo.extension == "jpeg" else ".jpg"
 		return path
 	
