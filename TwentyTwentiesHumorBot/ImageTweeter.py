@@ -10,7 +10,7 @@ class BotIntegratedEasyTweeter(EasyTweeter):
 	
 class ImageTweeter(object):
 	botClass = BotIntegratedEasyTweeter # makes the unit test easier to write
-	def __init__(self, homeDir, twitterInteractionCheckInterval = 5):
+	def __init__(self, homeDir, twitterInteractionCheckInterval = 12):
 		self.logger = logging.getLogger('2020sHumorBot').getChild('ImageTweeter')
 		
 		self.homeDir = homeDir
