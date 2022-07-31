@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock
 import os.path
 import shutil
 import tempfile
+import random
 
 from TwentyTwentiesHumorBot import FileHandler
 
@@ -91,6 +92,26 @@ class FileHandlerTests(unittest.TestCase):
 			# validate
 			self.assertFalse(os.path.exists(os.path.join(tempdir, 'test_home', 'input', filename)))
 			self.assertTrue(os.path.exists(os.path.join(tempdir, 'test_home', 'failed', filename)))
+	
+	def testMarkImageAsFailedAlreadyPresent(self):
+		random.seed(42069)
+		filename = "pexels - 1170986 - EVG_Kowalievska - 'cat'.jpg"
+		with tempfile.TemporaryDirectory() as tempdir:
+			# setup
+			os.makedirs(os.path.join(tempdir, 'test_home', 'input'))
+			os.makedirs(os.path.join(tempdir, 'test_home', 'failed'))
+			shutil.copyfile(os.path.join('test_data', filename), os.path.join(tempdir, 'test_home', 'input', filename))
+			shutil.copyfile(os.path.join('test_data', filename), os.path.join(tempdir, 'test_home', 'failed', filename))
+			
+			fh = FileHandler(os.path.join(tempdir, 'test_home'))
+			
+			# execute
+			fh.markImageAsFailed(os.path.join(tempdir, 'test_home', 'input', filename))
+			
+			# validate
+			self.assertFalse(os.path.exists(os.path.join(tempdir, 'test_home', 'input', filename)))
+			self.assertTrue(os.path.exists(os.path.join(tempdir, 'test_home', 'failed', filename)))
+			self.assertTrue(os.path.exists(os.path.join(tempdir, 'test_home', 'failed', filename + ".860")))
 		
 	def testMarkImageAsUsedNoNumber(self):
 		filename = "pexels - 1170986 - EVG_Kowalievska - 'cat'.jpg"
@@ -188,6 +209,26 @@ class FileHandlerTests(unittest.TestCase):
 			# validate
 			self.assertFalse(os.path.exists(os.path.join(tempdir, 'test_home', 'curation', 'input', filename)))
 			self.assertTrue(os.path.exists(os.path.join(tempdir, 'test_home', 'curation', 'failed', filename)))
+		
+	def testMarkImageAsFailedCurationAlreadyPresent(self):
+		random.seed(42069)
+		filename = "pexels - 1170986 - EVG_Kowalievska - 'cat'.jpg"
+		with tempfile.TemporaryDirectory() as tempdir:
+			# setup
+			os.makedirs(os.path.join(tempdir, 'test_home', 'curation', 'input'))
+			os.makedirs(os.path.join(tempdir, 'test_home', 'curation', 'failed'))
+			shutil.copyfile(os.path.join('test_data', filename), os.path.join(tempdir, 'test_home', 'curation', 'failed', filename))
+			shutil.copyfile(os.path.join('test_data', filename), os.path.join(tempdir, 'test_home', 'curation', 'input', filename))
+			
+			fh = FileHandler(os.path.join(tempdir, 'test_home'))
+			
+			# execute
+			fh.markImageAsFailedCuration(os.path.join(tempdir, 'test_home', 'curation', 'input', filename))
+			
+			# validate
+			self.assertFalse(os.path.exists(os.path.join(tempdir, 'test_home', 'curation', 'input', filename)))
+			self.assertTrue(os.path.exists(os.path.join(tempdir, 'test_home', 'curation', 'failed', filename)))
+			self.assertTrue(os.path.exists(os.path.join(tempdir, 'test_home', 'curation', 'failed', filename + ".860")))
 		
 	def testMarkImageAsUSedCuration(self):
 		filename = "pexels - 1170986 - EVG_Kowalievska - 'cat'.jpg"

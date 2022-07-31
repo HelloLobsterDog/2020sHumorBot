@@ -53,7 +53,12 @@ class FileHandler(object):
 	def markImageAsFailed(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.failedDirName, os.path.basename(path))
 		os.makedirs(os.path.join(self.homeDir, self.failedDirName), exist_ok = True)
-		os.rename(path, pathToMoveTo)
+		if not os.path.exists(pathToMoveTo):
+			os.rename(path, pathToMoveTo)
+		else:
+			self.logger.warning("path to move to already exists! Appending a number to the filename to get around this.")
+			pathToMoveTo = pathToMoveTo + '.' + str(random.randrange(1000))
+			os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
 		
 	def markImageAsUsed(self, path):
@@ -116,7 +121,12 @@ class FileHandler(object):
 	def markImageAsFailedCuration(self, path):
 		pathToMoveTo = os.path.join(self.homeDir, self.curationDirName, self.failedDirName, os.path.basename(path))
 		os.makedirs(os.path.join(self.homeDir, self.curationDirName, self.failedDirName), exist_ok = True)
-		os.rename(path, pathToMoveTo)
+		if not os.path.exists(pathToMoveTo):
+			os.rename(path, pathToMoveTo)
+		else:
+			self.logger.warning("path to move to already exists! Appending a number to the filename to get around this.")
+			pathToMoveTo = pathToMoveTo + '.' + str(random.randrange(1000))
+			os.rename(path, pathToMoveTo)
 		self.logger.info("image %s moved to failed folder: %s", path, pathToMoveTo)
 		
 	@property
