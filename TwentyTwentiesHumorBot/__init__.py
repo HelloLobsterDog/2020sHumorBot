@@ -14,7 +14,7 @@ from .ImageCaptioner import ImageCaptioner
 from .NameStupifier import NameStupifier
 from .FileHandler import FileHandler
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 
